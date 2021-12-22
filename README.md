@@ -32,3 +32,6 @@ Current state 1:
 - [ ] 3D versions: [Trefoil_knot](https://en.wikipedia.org/wiki/)
 - [ ] Boundary conditions: (infinite loop, hard walls, drawble, portals)
 - [ ] Hexagonal
+
+### Local Dev
+I use [Live Server](https://github.com/ritwickdey/vscode-live-server) on Visual Studio Code to test locally.
