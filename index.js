@@ -24,38 +24,23 @@ const speed_selector = document.getElementById('speed_selector')
 const speed_indicator = document.getElementById('speed_indicator')
 const grid_x_input = document.getElementById('grid_x_input')
 const grid_y_input = document.getElementById('grid_y_input')
+const grid_fill_screen_button = document.getElementById('grid_fill_screen_button')
 
 var interval_length = speed_selector.value // Iteration delay of game loop
 var living_colour = living_colour_selector.value
 var dead_colour = dead_colour_selector.value
 var grid_colour = grid_colour_selector.value
 var running = false
-var interval
+var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
 
 //////////
 // Init //
 //////////
 
-// Set grid width, and inputs
-
-console.log(canvas_height)
-var grid_x_count = Math.floor(left_content.offsetWidth / CELL_WIDTH)
-var grid_y_count = Math.floor(left_content.offsetHeight / CELL_HEIGHT)
-var canvas_width = grid_x_count * CELL_WIDTH
-var canvas_height = grid_y_count * CELL_HEIGHT
-
-// var grid_x_count = +grid_x_input.value         // Number of cells
-// var grid_y_count = +grid_y_input.value         // Number of cells
-// var canvas_width = grid_x_count * CELL_WIDTH   // Raw value, in px
-// var canvas_height = grid_y_count * CELL_HEIGHT // Raw value, in px
-
 var canvas = document.getElementById('game');
-canvas.width = canvas_width
-canvas.height = canvas_height
 var context = canvas.getContext('2d');
 
-
-//////
+gridFillScreen()
 
 var cells = initCells(grid_x_count, grid_y_count)
 drawCells(cells)
@@ -144,6 +129,17 @@ function drawCell(x, y, context, value) {
     context.fillRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
     context.fillStyle = alive ? living_colour : dead_colour
     context.fillRect(x * CELL_WIDTH + 1, y * CELL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2);
+}
+
+function gridFillScreen() {
+    grid_x_count = Math.floor(left_content.offsetWidth / CELL_WIDTH)
+    grid_y_count = Math.floor(left_content.offsetHeight / CELL_HEIGHT)
+    canvas_width = grid_x_count * CELL_WIDTH
+    canvas_height = grid_y_count * CELL_HEIGHT
+    grid_x_input.value = grid_x_count
+    grid_y_input.value = grid_y_count
+    canvas.width = canvas_width
+    canvas.height = canvas_height
 }
 
 canvas.addEventListener("mousedown", function (event) {
@@ -241,6 +237,13 @@ grid_y_input.onchange = function () {
     grid_y_count = +grid_y_input.value
     canvas_height = grid_y_count * CELL_HEIGHT
     canvas.height = canvas_height
+    cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
+    drawCells(cells)
+}
+
+// Grid Fill Screen
+grid_fill_screen_button.onclick = function () {
+    gridFillScreen()
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
     drawCells(cells)
 }
