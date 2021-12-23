@@ -4,12 +4,20 @@
 <head>
     <meta charset="utf-8">
     <title>Game of Life</title>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
-    <script src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h3>Hey!!</h3>
+    <div class="top_buttons">
+        <button id="start_game" class="button">Start</button>
+        <button id="stop_game" class="button" disabled>Stop</button>
+        <button id="advance_game" class="button">Advance</button>
+        <button id="clear_game" class="button">Clear</button>
+    </div>
+    <canvas id="game" width="500" height="500" style="border:1px solid lightgrey;">
+        Your browser does not support HTML5 canvas 😔.
+    </canvas>
+    <script src="index.js"></script>
 </body>
 
 </html>
