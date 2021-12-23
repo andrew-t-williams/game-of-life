@@ -36,6 +36,7 @@ body {
     position: absolute;
     width: calc(100% - 200px);
     height: calc(100vh - 70px);
+    overflow: scroll;
 }
 
 .left_content {
@@ -48,6 +49,7 @@ body {
     margin-left: calc(100% - 200px);
     width: 200px;
     height: calc(100vh - 70px);
+    overflow: scroll;
 }
 
 .right_content {
