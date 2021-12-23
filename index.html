@@ -5,18 +5,93 @@
     <meta charset="utf-8">
     <title>Game of Life</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
 </head>
 
 <body>
+    <!-- Top Buttons -->
     <div class="top_buttons">
-        <button id="start_game" class="button">Start</button>
-        <button id="stop_game" class="button" disabled>Stop</button>
-        <button id="advance_game" class="button">Advance</button>
-        <button id="clear_game" class="button">Clear</button>
+        <button id="start_game" class="button">
+            <span class="iconify" data-icon="bi:play-fill"></span></span>
+            <small>Start</small>
+        </button>
+        <button id="stop_game" class="button" disabled>
+            <span class="iconify" data-icon="carbon:pause-filled"></span></span>
+            <small>Stop</small>
+        </button>
+        <button id="advance_game" class="button">
+            <span class="iconify" data-icon="bi:skip-forward-fill"></span>
+            <small>Advance</small>
+        </button>
+        <button id="clear_game" class="button">
+            <span class="iconify" data-icon="icon-park-outline:clear-format"></span>
+            <small>Clear</small>
+        </button>
     </div>
-    <canvas id="game" width="500" height="500" style="border:1px solid lightgrey;">
-        Your browser does not support HTML5 canvas 😔.
-    </canvas>
+    <!-- Main Content -->
+    <div class="main_content">
+        <div class="left_side">
+            <div class="left_content">
+                <canvas id="game" width="500" height="500" style="border:1px solid lightgrey;">
+                    Your browser does not support HTML5 canvas 😔.
+                </canvas>
+            </div>
+        </div>
+        <div class="right_side">
+            <div class="right_content">
+                <h3>Settings</h3>
+                <hr><br>
+                <div id="speed_indicator" style="width: 100%; text-align: center;">Speed: 5 fps</div>
+                <div style="width: 100%;">
+                    <div style="width: 10%; float: left; text-align: center;">
+                        <small>1</small>
+                    </div>
+                    <input id="speed_selector" style="width: 75%; float: left;" type="range" min="1" max="50" value="5">
+                    <div style="width: 10%; float: left; text-align: center;">
+                        <small>50</small>
+                    </div>
+                </div>
+                <br><br>
+                <div style="width: 100%; padding: 2px; margin-top: 6px;">
+                    Toroidal Border
+                    <a href="https://en.wikipedia.org/wiki/Torus" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                        <span style="width: 25px; height: 25px;" class="iconify" data-icon="clarity:info-circle-line"></span>
+                    </a>
+                    <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div style="width: 100%; padding: 2px; margin-top: 6px;">
+                    Drawable
+                    <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <br>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="width: 70%;">Living Cells</td>
+                            <td style="width: 30%;"><input type="color" value="#ff1a1a" id="living_colour" /></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 70%;">Dead Cells</td>
+                            <td style="width: 30%;"><input type="color" value="#ffffff" id="dead_colour" /></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 70%;">Grid</td>
+                            <td style="width: 30%;"><input type="color" value="#000000" id="grid_colour" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
     <script src="index.js"></script>
 </body>
 

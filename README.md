@@ -26,10 +26,11 @@ Current state 1:
     * spaceships
     * guns
     * logic gates
-- [ ] Change speed, pause, play
+- [X] Change speed, pause, play
 - [ ] Cosmetic editor
-  * Colour of live/dead cells
-  * Fade when dying
+  - [X] Colour of live/dead cells
+  - [X] Colour grid lines
+  - [ ] Fade when dying
 - [ ] Analysis sidebar (current count, stats?)
 - [ ] Game of Life in Game of Life
 - [ ] 3D versions: [Trefoil_knot](https://en.wikipedia.org/wiki/)
