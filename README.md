@@ -30,6 +30,7 @@ Current state 1:
 - [ ] Cosmetic editor
   - [X] Colour of live/dead cells
   - [X] Colour grid lines
+  - [ ] Change size of grid, keeps live squares where possible.
   - [ ] Fade when dying
 - [ ] Analysis sidebar (current count, stats?)
 - [ ] Game of Life in Game of Life
