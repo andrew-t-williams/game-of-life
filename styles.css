@@ -54,7 +54,17 @@ body {
     margin:8px;
 }
 
+.input-stepper {
+    text-align-last: center;
+}
 
+.grid_x_stepper, .grid_y_stepper {
+    padding: 1px;
+}
+
+.grid_x_input, .grid_y_input {
+    width: 67px;
+}
 
 .switch {
     position: relative;
