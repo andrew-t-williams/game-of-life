@@ -40,7 +40,8 @@ body {
 }
 
 .left_content {
-    margin:8px;
+    margin: 8px;
+    height: calc(100% - 16px);
 }
   
 .right_side {

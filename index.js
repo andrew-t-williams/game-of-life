@@ -16,6 +16,7 @@ const advance_button = document.getElementById('advance_game')
 const clear_button = document.getElementById('clear_game')
 
 // Settings inputs
+const left_content = document.getElementById('left_content')
 const living_colour_selector = document.getElementById('living_colour')
 const dead_colour_selector = document.getElementById('dead_colour')
 const grid_colour_selector = document.getElementById('grid_colour')
@@ -25,27 +26,36 @@ const grid_x_input = document.getElementById('grid_x_input')
 const grid_y_input = document.getElementById('grid_y_input')
 
 var interval_length = speed_selector.value // Iteration delay of game loop
-
 var living_colour = living_colour_selector.value
 var dead_colour = dead_colour_selector.value
 var grid_colour = grid_colour_selector.value
-
-var grid_x_count = +grid_x_input.value         // Number of cells
-var grid_y_count = +grid_y_input.value         // Number of cells
-var canvas_width = grid_x_count * CELL_WIDTH   // Raw value, in px
-var canvas_height = grid_y_count * CELL_HEIGHT // Raw value, in px
-
-var canvas = document.getElementById('game');
-canvas.width = canvas_width
-canvas.height = canvas_height
-var context = canvas.getContext('2d');
-
 var running = false
 var interval
 
 //////////
 // Init //
 //////////
+
+// Set grid width, and inputs
+
+console.log(canvas_height)
+var grid_x_count = Math.floor(left_content.offsetWidth / CELL_WIDTH)
+var grid_y_count = Math.floor(left_content.offsetHeight / CELL_HEIGHT)
+var canvas_width = grid_x_count * CELL_WIDTH
+var canvas_height = grid_y_count * CELL_HEIGHT
+
+// var grid_x_count = +grid_x_input.value         // Number of cells
+// var grid_y_count = +grid_y_input.value         // Number of cells
+// var canvas_width = grid_x_count * CELL_WIDTH   // Raw value, in px
+// var canvas_height = grid_y_count * CELL_HEIGHT // Raw value, in px
+
+var canvas = document.getElementById('game');
+canvas.width = canvas_width
+canvas.height = canvas_height
+var context = canvas.getContext('2d');
+
+
+//////
 
 var cells = initCells(grid_x_count, grid_y_count)
 drawCells(cells)
