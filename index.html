@@ -5,18 +5,18 @@
     <meta charset="utf-8">
     <title>Game of Life</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
 </head>
 
 <body>
     <!-- Top Buttons -->
     <div class="top_buttons">
-        <button id="start_game" class="button">
+        <button id="start_game" class="button play_pause">
             <span class="iconify" data-icon="bi:play-fill"></span></span>
             <small>Start</small>
         </button>
-        <button id="stop_game" class="button" disabled>
+        <button id="stop_game" class="button play_pause" disabled>
             <span class="iconify" data-icon="carbon:pause-filled"></span></span>
             <small>Stop</small>
         </button>
@@ -53,6 +53,26 @@
                     </div>
                 </div>
                 <br><br>
+                Grid Width
+                <div class="input-stepper">
+                    <button class="grid_x_stepper" grid-x-change="-10">-10</button>
+                    <button class="grid_x_stepper" grid-x-change="-5">-5</button>
+                    <button class="grid_x_stepper" grid-x-change="-1">-1</button>
+                    <input id="grid_x_input" type="text" max="100" value="25">
+                    <button class="grid_x_stepper">+1</button>
+                    <button class="grid_x_stepper">+5</button>
+                    <button class="grid_x_stepper">+10</button>
+                </div>
+                Grid Height
+                <div class="input-stepper">
+                    <button class="grid_y_stepper">-10</button>
+                    <button class="grid_y_stepper">-5</button>
+                    <button class="grid_y_stepper">-1</button>
+                    <input id="grid_y_input" type="text" max="100" value="25">
+                    <button class="grid_y_stepper">+1</button>
+                    <button class="grid_y_stepper">+5</button>
+                    <button class="grid_y_stepper">+10</button>
+                </div>
                 <div style="width: 100%; padding: 2px; margin-top: 6px;">
                     Toroidal Border
                     <a href="https://en.wikipedia.org/wiki/Torus" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">

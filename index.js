@@ -19,12 +19,14 @@ const stop_button = document.getElementById('stop_game')
 const advance_button = document.getElementById('advance_game')
 const clear_button = document.getElementById('clear_game')
 
-// Settings
+// Settings inputs
 const living_colour_selector = document.getElementById('living_colour')
 const dead_colour_selector = document.getElementById('dead_colour')
 const grid_colour_selector = document.getElementById('grid_colour')
 const speed_selector = document.getElementById('speed_selector')
 const speed_indicator = document.getElementById('speed_indicator')
+const grid_x_input = document.getElementById('grid_x_input')
+const grid_y_input = document.getElementById('grid_y_input')
 
 var interval_length = speed_selector.value
 var living_colour = living_colour_selector.value
@@ -185,4 +187,26 @@ dead_colour_selector.oninput = function () {
 grid_colour_selector.oninput = function () {
     grid_colour = grid_colour_selector.value
     drawCells(cells)
+}
+
+// Grid width stepper buttons
+$('.grid_x_stepper').click(function () {
+    grid_x_input.value = +grid_x_input.value + +$(this).html()
+    grid_x_input.onchange();
+});
+
+// Grid height stepper buttons
+$('.grid_y_stepper').click(function () {
+    grid_y_input.value = +grid_y_input.value + +$(this).html()
+    grid_y_input.onchange();
+});
+
+// Grid width input
+grid_x_input.onchange = function () {
+    console.log("Updating X: " + grid_x_input.value)
+}
+
+// Grid height input
+grid_y_input.onchange = function () {
+    console.log("Updating Y: " + grid_y_input.value)
 }
