@@ -1,5 +1,5 @@
-# game-of-life
-An interactive visualization of Conway's Game of Life. 
+# Conway's Game of Life
+An interactive web app to visualize Conway's Game of Life. 
 
 Two dimentional grid of cells. Each cell is either dead or alive, and each generation or frame has rules of how a cell's state changes. Evaluations are based on surrounding cells.
 
