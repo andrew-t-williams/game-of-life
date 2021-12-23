@@ -13,6 +13,7 @@ which is to say, the only changes are:
 
 Current state 0:
 * Becomes 1 surrounded by exactly 3 live cells
+
 Current state 1:
 * Becomes 0 if surrounded by <2 or >3 live cells
 
