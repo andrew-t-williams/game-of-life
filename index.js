@@ -17,9 +17,12 @@ const clear_button = document.getElementById('clear_game')
 
 // Settings inputs
 const left_content = document.getElementById('left_content')
+
+const fade_switch = document.getElementById('fade_switch')
 const living_colour_selector = document.getElementById('living_colour')
 const dead_colour_selector = document.getElementById('dead_colour')
 const grid_colour_selector = document.getElementById('grid_colour')
+
 const speed_selector = document.getElementById('speed_selector')
 const speed_indicator = document.getElementById('speed_indicator')
 const grid_x_input = document.getElementById('grid_x_input')
@@ -30,6 +33,7 @@ var interval_length = speed_selector.value // Iteration delay of game loop
 var living_colour = living_colour_selector.value
 var dead_colour = dead_colour_selector.value
 var grid_colour = grid_colour_selector.value
+var fade = fade_switch.checked
 var running = false
 var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
 
@@ -39,9 +43,7 @@ var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
 
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
-
 gridFillScreen()
-
 var cells = initCells(grid_x_count, grid_y_count)
 drawCells(cells)
 
@@ -50,8 +52,23 @@ drawCells(cells)
 ///////////////
 
 function gameLoop() {
+    console.log("game loop")
+    var oldCells = cells
     cells = advanceState(cells)
-    drawCells(cells)
+    var dyingCells = filterDyingCells(oldCells, cells)
+    drawCells(cells, (fade && running ? dyingCells : null))
+}
+
+function filterDyingCells(oldCells, newCells) {
+    var dyingCells = initCells(grid_x_count, grid_y_count)
+    for (var x = 0; x < grid_x_count; x++) {
+        for (var y = 0; y < grid_y_count; y++) {
+            if (oldCells[x][y] && !newCells[x][y]) {
+                dyingCells[x][y] = 1
+            }
+        }
+    }
+    return dyingCells
 }
 
 function advanceState(cells) {
@@ -100,10 +117,35 @@ function clearCells(cells) {
     }
 }
 
-function drawCells(cells) {
-    for (var x = 0; x < grid_x_count; x++) {
-        for (var y = 0; y < grid_y_count; y++) {
-            drawCell(x, y, context, cells[x][y])
+function drawCells(cells, dyingCells) {
+    if (dyingCells) {
+        var alpha = 0
+        var i = 0
+        var deathLoop = setInterval(function () {
+            for (var x = 0; x < grid_x_count; x++) {
+                for (var y = 0; y < grid_y_count; y++) {
+                    var value = cells[x][y]
+                    var alive = (value ? 1 : (value == 0 ? 0 : Math.floor(Math.random() * 2)))
+                    context.fillStyle = alive ? living_colour : dead_colour
+                    if (dyingCells[x][y] == 1) {
+                        context.globalAlpha = alpha
+                    }
+                    context.fillRect(x * CELL_WIDTH + 1, y * CELL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2);
+                    context.globalAlpha = 1
+                }
+            }
+
+            alpha += 0.03
+            i++
+            if (i >= 10) {
+                clearInterval(deathLoop)
+            }
+        }, 100 / interval_length)
+    } else {
+        for (var x = 0; x < grid_x_count; x++) {
+            for (var y = 0; y < grid_y_count; y++) {
+                drawCell(x, y, context, cells[x][y])
+            }
         }
     }
 }
@@ -130,6 +172,7 @@ function drawCell(x, y, context, value) {
     context.fillStyle = alive ? living_colour : dead_colour
     context.fillRect(x * CELL_WIDTH + 1, y * CELL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2);
 }
+
 
 function gridFillScreen() {
     grid_x_count = Math.floor(left_content.offsetWidth / CELL_WIDTH)
@@ -170,6 +213,7 @@ stop_button.onclick = function () {
     advance_button.disabled = false
     running = false
     clearInterval(interval);
+    drawCells(cells)
 }
 
 // Advance button
@@ -180,6 +224,11 @@ advance_button.onclick = function () {
 // Clear button
 clear_button.onclick = function () {
     clearCells(cells)
+}
+
+// Fade Switch
+fade_switch.onchange = function () {
+    fade = fade_switch.checked
     drawCells(cells)
 }
 

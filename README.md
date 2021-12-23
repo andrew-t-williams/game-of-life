@@ -32,6 +32,7 @@ Current state 1:
   - [X] Colour grid lines
   - [X] Change size of grid, keeps live squares where possible.
   - [ ] Fade when dying
+- [ ] Cookies to remember settings
 - [ ] Analysis sidebar (current count, stats?)
 - [ ] Game of Life in Game of Life
 - [ ] 3D versions: [Trefoil_knot](https://en.wikipedia.org/wiki/)
