@@ -121,24 +121,24 @@
                     <h4>Statistics</h4>
                     <hr>
                     <!-- Normal Stats -->
-                    <h5 style="margin: 4px 0px">Basic Stats:</h5>
+                    <!-- <h5 style="margin: 4px 0px">Basic Stats:</h5> -->
                     <table>
                         <tbody>
                             <tr>
                                 <td style="width: 60%;">Real FPS:</td>
-                                <td style="width: 40%;"><input id="stat_real_framerate" style="width: 90%" value="N/A" disabled></td>
+                                <td style="width: 40%;"><input id="stat_real_framerate" style="width: 90%" value="--" disabled></td>
                             </tr>
                             <tr>
                                 <td style="width: 60%;">Target FPS:</td>
-                                <td style="width: 40%;"><input id="stat_ideal_framerate" style="width: 90%" value="" disabled></td>
+                                <td style="width: 40%;"><input id="stat_ideal_framerate" style="width: 90%" value="--" disabled></td>
                             </tr>
                             <tr>
                                 <td style="width: 60%;">FPS Lag:</td>
-                                <td style="width: 40%;"><input id="stat_framerate_diff" style="width: 90%" value="N/A" disabled></td>
+                                <td style="width: 40%;"><input id="stat_framerate_diff" style="width: 90%" value="--" disabled></td>
                             </tr>
                             <tr>
                                 <td style="width: 60%;">Total Cells:</td>
-                                <td style="width: 40%;"><input id="stat_total_cells" style="width: 90%" value="" disabled></td>
+                                <td style="width: 40%;"><input id="stat_total_cells" style="width: 90%" value="--" disabled></td>
                             </tr>
                         </tbody>
                     </table>
@@ -147,23 +147,36 @@
                     <div style="width: 100%; padding: 2px; margin-top: 6px; height: 18px;">
                         <h5 style="margin: 0px 0px 4px 0px; float: left;">Advanced Stats:</h5>
                         <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
-                            <input id="stats_switch" type="checkbox">
+                            <input id="stats_switch" type="checkbox" checked>
                             <span class="slider round"></span>
                         </label>
                     </div>
-                    <div id="advanced_stats" style="display: none;">
+                    <div id="advanced_stats" style="display: block;">
                         <table>
                             <tbody>
                                 <tr>
                                     <td style="width: 60%;">Dead Cells:</td>
-                                    <td style="width: 40%;"><input style="width: 90%" value="x" disabled></td>
+                                    <td style="width: 40%;"><input id="stat_dead_cells" style="width: 90%" value="--" disabled></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 60%;">Alive Cells:</td>
-                                    <td style="width: 40%;"><input style="width: 90%" value="x" disabled></td>
+                                    <td style="width: 40%;"><input id="stat_living_cells" style="width: 90%" value="--" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 60%;">Peak Alive:</td>
+                                    <td style="width: 40%;"><input id="stat_living_cells_max" style="width: 90%" value="0" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 60%;">Ratio:</td>
+                                    <td style="width: 40%;"><input id="stat_living_ratio" style="width: 90%" value="0%" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 60%;">Peak Ratio: </td>
+                                    <td style="width: 40%;"><input id="stat_living_ratio_max" style="width: 90%" value="0%" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
+                        <br>
                         <small>Advanced stats may cause slower gameplay.</small>
                     </div>
                 </div>

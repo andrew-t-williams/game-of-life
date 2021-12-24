@@ -47,6 +47,13 @@ const stat_ideal_framerate = document.getElementById('stat_ideal_framerate')
 const stat_real_framerate = document.getElementById('stat_real_framerate')
 const stat_framerate_diff = document.getElementById('stat_framerate_diff')
 const stat_total_cells = document.getElementById('stat_total_cells')
+const stat_dead_cells = document.getElementById('stat_dead_cells')
+const stat_living_cells = document.getElementById('stat_living_cells')
+const stat_living_ratio = document.getElementById('stat_living_ratio')
+
+const stat_living_cells_max = document.getElementById('stat_living_cells_max')
+const stat_living_ratio_max = document.getElementById('stat_living_ratio_max')
+
 
 stat_ideal_framerate.value = interval_length
 
@@ -73,32 +80,14 @@ var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
 gridFillScreen()
 var cells = initCells(grid_x_count, grid_y_count)
-drawCells(cells)
+gameLoop()
+// drawCells(cells)
 
 ///////////////
 // Functions //
 ///////////////
 
 function gameLoop() {
-    // Calculate timestamps
-    var stat_last = stat_now
-    stat_now = performance.now()
-    stat_framerate_array[stat_frame_count] = stat_now - stat_last
-    stat_frame_count++
-
-    // Every 10, calculate and display framerate
-    if (stat_frame_count % 5 == 0) {
-        var real_framerate = (1000 * stat_frame_array_length) / stat_framerate_array.reduce(arrayadd, 0)
-        var rounded_real_framerate = Math.round(real_framerate * 1000) / 1000
-        stat_real_framerate.value = rounded_real_framerate
-        var raw_fps_lag = ((stat_ideal_framerate.value * 100) / real_framerate) - 100
-        var rounded_fps_lag = (Math.round((raw_fps_lag) * 1000) / 1000)
-        stat_framerate_diff.value = (rounded_fps_lag > 1000000 ? "~♾" : rounded_fps_lag + "%")
-    }
-    if (stat_frame_count >= stat_frame_array_length) {
-        stat_frame_count = 0
-    }
-
     // Calculate next state
     // Fade dying cells based on changes if required
     if (fade_switch.checked && running) {
@@ -110,6 +99,58 @@ function gameLoop() {
         cells = advanceState(cells, null)
         drawCells(cells)
     }
+
+    timingStats()
+}
+
+function timingStats() {
+    // Calculate timestamps
+    var stat_last = stat_now
+    stat_now = performance.now()
+    stat_framerate_array[stat_frame_count] = stat_now - stat_last
+    stat_frame_count++
+
+    // Every 10 frames, calculate and display framerate
+    if (stat_frame_count % 5 == 0) {
+        var real_framerate = (1000 * stat_frame_array_length) / stat_framerate_array.reduce(arrayadd, 0)
+        var rounded_real_framerate = Math.round(real_framerate * 1000) / 1000
+        stat_real_framerate.value = rounded_real_framerate
+        var raw_fps_lag = ((stat_ideal_framerate.value * 100) / real_framerate) - 100
+        var rounded_fps_lag = (Math.round((raw_fps_lag) * 1000) / 1000)
+        stat_framerate_diff.value = (rounded_fps_lag > 1000 ? ">1000" : rounded_fps_lag) + "%"
+    }
+    if (stat_frame_count >= stat_frame_array_length) { stat_frame_count = 0 }
+
+    // Hide certain stats if game is advenced using button
+    if (!running) {
+        stat_real_framerate.value = "--"
+        stat_framerate_diff.value = "--"
+    }
+}
+
+function nonTimingStats() {
+    // Optional statistics
+    if (stats_switch.checked) {
+        var living = countLivingCells(cells)
+        var total = (grid_x_count * grid_y_count)
+        var living_ratio = Math.round((living / total) * 1000) / 10
+
+        stat_living_cells.value = living
+        stat_dead_cells.value = total - living
+        stat_living_ratio.value = living_ratio
+        if (living > stat_living_cells_max.value) {
+            stat_living_cells_max.value = living
+            stat_living_ratio_max.value = living_ratio
+        }
+    }
+}
+
+function countLivingCells(cells) {
+    var living = 0
+    for (var x = 0; x < grid_x_count; x++) {
+        living += cells[x].reduce(arrayadd, 0)
+    }
+    return living
 }
 
 function filterDyingCells(oldCells, newCells) {
@@ -173,8 +214,6 @@ function clearCells(cells) {
 
 function drawCells(cells, dyingCells) {
     if (dyingCells) {
-
-
         var alpha = 0
         var i = 0
         var deathLoop = setInterval(function () {
@@ -204,6 +243,8 @@ function drawCells(cells, dyingCells) {
             }
         }
     }
+    // To show most accurate stats, they should be calculated on each draw
+    nonTimingStats()
 }
 
 function changeDimensionCells(cells, new_x_count, new_y_count) {
