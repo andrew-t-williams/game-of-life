@@ -34,6 +34,7 @@ const grid_fill_screen_button = document.getElementById('grid_fill_screen_button
 
 // Calculated globals
 var interval_length = speed_selector.value       // desired fps of game loop
+
 var living_colour = living_colour_selector.value
 var dead_colour = dead_colour_selector.value
 var grid_colour = grid_colour_selector.value
@@ -42,6 +43,17 @@ var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
 
 // Statistics
 // truth based on 'stats_switch.checked'
+const stat_ideal_framerate = document.getElementById('stat_ideal_framerate')
+const stat_real_framerate = document.getElementById('stat_real_framerate')
+const stat_framerate_diff = document.getElementById('stat_framerate_diff')
+const stat_total_cells = document.getElementById('stat_total_cells')
+
+stat_ideal_framerate.value = interval_length
+
+const stat_frame_array_length = 10
+var stat_frame_count = 0
+var stat_framerate_array = []
+var stat_now = performance.now()
 
 //////////
 // Init //
@@ -68,11 +80,36 @@ drawCells(cells)
 ///////////////
 
 function gameLoop() {
-    console.log("game loop")
-    var oldCells = cells
-    cells = advanceState(cells)
-    var dyingCells = filterDyingCells(oldCells, cells)
-    drawCells(cells, (fade_switch.checked && running ? dyingCells : null))
+    // Calculate timestamps
+    var stat_last = stat_now
+    stat_now = performance.now()
+    stat_framerate_array[stat_frame_count] = stat_now - stat_last
+    stat_frame_count++
+
+    // Every 10, calculate and display framerate
+    if (stat_frame_count % 5 == 0) {
+        var real_framerate = (1000 * stat_frame_array_length) / stat_framerate_array.reduce(arrayadd, 0)
+        var rounded_real_framerate = Math.round(real_framerate * 1000) / 1000
+        stat_real_framerate.value = rounded_real_framerate
+        var raw_fps_lag = ((stat_ideal_framerate.value * 100) / real_framerate) - 100
+        var rounded_fps_lag = (Math.round((raw_fps_lag) * 1000) / 1000)
+        stat_framerate_diff.value = (rounded_fps_lag > 1000000 ? "~♾" : rounded_fps_lag + "%")
+    }
+    if (stat_frame_count >= stat_frame_array_length) {
+        stat_frame_count = 0
+    }
+
+    // Calculate next state
+    // Fade dying cells based on changes if required
+    if (fade_switch.checked && running) {
+        var oldCells = cells
+        cells = advanceState(cells)
+        var dyingCells = filterDyingCells(oldCells, cells)
+        drawCells(cells, dyingCells)
+    } else {
+        cells = advanceState(cells, null)
+        drawCells(cells)
+    }
 }
 
 function filterDyingCells(oldCells, newCells) {
@@ -136,6 +173,8 @@ function clearCells(cells) {
 
 function drawCells(cells, dyingCells) {
     if (dyingCells) {
+
+
         var alpha = 0
         var i = 0
         var deathLoop = setInterval(function () {
@@ -194,12 +233,17 @@ function drawCell(x, y, context, value) {
 function gridFillScreen() {
     grid_x_count = Math.floor(left_content.offsetWidth / CELL_WIDTH)
     grid_y_count = Math.floor(left_content.offsetHeight / CELL_HEIGHT)
+    stat_total_cells.value = grid_x_count * grid_y_count
     canvas_width = grid_x_count * CELL_WIDTH
     canvas_height = grid_y_count * CELL_HEIGHT
     grid_x_input.value = grid_x_count
     grid_y_input.value = grid_y_count
     canvas.width = canvas_width
     canvas.height = canvas_height
+}
+
+function arrayadd(accumulator, a) {
+    return accumulator + a;
 }
 
 canvas.addEventListener("mousedown", function (event) {
@@ -247,6 +291,7 @@ clear_button.onclick = function () {
 // Speed Selector
 speed_selector.oninput = function () {
     interval_length = speed_selector.value
+    stat_ideal_framerate.value = interval_length
     speed_indicator.innerText = 'Speed: ' + interval_length + ' fps'
     if (running) {
         clearInterval(interval)
@@ -258,11 +303,13 @@ speed_selector.oninput = function () {
 max_speed_switch.onchange = function () {
     // under_construction
     if (max_speed_switch.checked) {
-        interval_length = Number.MAX_SAFE_INTEGER
+        interval_length = 999999
+        stat_ideal_framerate.value = interval_length
         speed_indicator.innerText = 'Speed: CPU limited'
         document.getElementById('speed_bar').classList.add("under_construction");
     } else {
         interval_length = speed_selector.value
+        stat_ideal_framerate.value = interval_length
         speed_indicator.innerText = 'Speed: ' + interval_length + ' fps'
         document.getElementById('speed_bar').classList.remove("under_construction");
     }
@@ -313,6 +360,7 @@ grid_x_input.onchange = function () {
         grid_x_count = min
     }
     grid_x_input.value = grid_x_count
+    stat_total_cells.value = grid_x_count * grid_y_count
     canvas_width = grid_x_count * CELL_WIDTH
     canvas.width = canvas_width
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
@@ -330,6 +378,7 @@ grid_y_input.onchange = function () {
         grid_y_count = min
     }
     grid_y_input.value = grid_y_count
+    stat_total_cells.value = grid_x_count * grid_y_count
     canvas_height = grid_y_count * CELL_HEIGHT
     canvas.height = canvas_height
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
