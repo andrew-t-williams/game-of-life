@@ -6,7 +6,8 @@ body {
 .top_buttons {
     padding: 8px;
     background-color: rgb(69, 69, 69);
-    height: 54px; /* Total height 70px */
+    height: 54px;
+    /* Total height 70px */
     overflow: scroll;
     min-width: 530px;
 }
@@ -46,19 +47,28 @@ body {
     margin-top: 12px;
 }
 
-  /* The Modal (background) */
+/* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
 }
 
 /* Modal Content */
@@ -97,18 +107,23 @@ body {
     margin: 8px;
     height: calc(100% - 16px);
 }
-  
+
 .right_side {
     background-color: #929292;
     position: absolute;
     margin-left: calc(100% - 200px);
     width: 200px;
     height: calc(100vh - 70px);
-    overflow: scroll;
+    overflow: hidden;
 }
 
 .right_content {
-    margin:8px;
+    height: 100%;
+}
+
+.under_construction {
+    pointer-events: none;
+    opacity: 0.2;
 }
 
 .input-stepper {
@@ -130,7 +145,7 @@ body {
     height: 17px;
 }
 
-.switch input { 
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -160,15 +175,15 @@ body {
     transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: #2196F3;
 }
 
-input:focus + .slider {
+input:focus+.slider {
     box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     -webkit-transform: translateX(13px);
     -ms-transform: translateX(13px);
     transform: translateX(13px);
@@ -182,5 +197,44 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
-  
-  
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 5px;
+    height: 50px;
+    width: 50px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-top: none;
+    height: calc(100vh - 70px - 52px - 12px);
+    overflow: scroll;
+}

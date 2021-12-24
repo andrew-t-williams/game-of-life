@@ -94,81 +94,119 @@
         <!-- Right Side -->
         <div class="right_side">
             <div class="right_content">
-                <h3>Settings</h3>
-                <hr>
-                <div style="width: 100%; padding: 2px; margin-top: 6px;">
-                    Toroidal Border
-                    <a href="https://en.wikipedia.org/wiki/Torus" style="text-decoration: none;">
-                        <span style="width: 25px; height: 25px;" class="iconify" data-icon="clarity:info-circle-line"></span>
-                    </a>
-                    <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div style="width: 100%; padding: 2px; margin-top: 6px;">
-                    Editable Cells
-                    <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div style="width: 100%; padding: 2px; margin-top: 6px;">
-                    Fade on Death
-                    <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
-                        <input id="fade_switch" type="checkbox">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td style="width: 70%;">Living Cells</td>
-                            <td style="width: 30%;"><input type="color" value="#ff1a1a" id="living_colour" /></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 70%;">Dead Cells</td>
-                            <td style="width: 30%;"><input type="color" value="#ffffff" id="dead_colour" /></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 70%;">Grid</td>
-                            <td style="width: 30%;"><input type="color" value="#000000" id="grid_colour" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr>
-                <br>
-                <div id="speed_indicator" style="width: 100%; text-align: center;">Speed: 5 fps</div>
-                <div style="width: 100%;">
-                    <div style="width: 10%; float: left; text-align: center;">
-                        <small>1</small>
-                    </div>
-                    <input id="speed_selector" style="width: 75%; float: left;" type="range" min="1" max="100" value="5">
-                    <div style="width: 10%; float: left; text-align: center;">
-                        <small>100</small>
-                    </div>
-                </div>
-                <br><br>
-                <div style="width: 100%; text-align: center;">Grid Width</div>
-                <div class="input-stepper">
-                    <button class="grid_x_stepper" grid-x-change="-10">-10</button>
-                    <button class="grid_x_stepper" grid-x-change="-5">-5</button>
-                    <input id="grid_x_input" class="grid_x_input" type="text" max="100" min="1" value="25">
-                    <button class="grid_x_stepper">+5</button>
-                    <button class="grid_x_stepper">+10</button>
-                </div>
-                <br>
-                <div style="width: 100%; text-align: center;">Grid Height</div>
-                <div class="input-stepper">
-                    <button class="grid_y_stepper">-10</button>
-                    <button class="grid_y_stepper">-5</button>
-                    <input id="grid_y_input" class="grid_y_input" type="text" max="100" min="1" value="25">
-                    <button class="grid_y_stepper">+5</button>
-                    <button class="grid_y_stepper">+10</button>
-                </div>
-                <br>
-                <button id="grid_fill_screen_button" style="width: 100%;">Fill Screen</button>
+                <!-- Tab Links -->
+                <div class="tab">
 
+
+                    <button id="settings_tab_link" class="tablinks" onclick="openTab(event, 'settings_tab')">
+                        <span class="iconify" data-icon="ci:settings-filled"></span>
+                    </button>
+                    <button id="stats_tab_link" class="tablinks" onclick="openTab(event, 'stats_tab')">
+                        <span class="iconify" data-icon="bx:bx-stats"></span>
+                    </button>
+                    <button id="patterns_tab_link" class="tablinks" onclick="openTab(event, 'patterns_tab')">
+                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                    </button>
+
+                </div>
+
+                <!-- Pattern Tags -->
+                <div id="patterns_tab" class="tabcontent">
+                    <h4>Patterns</h4>
+                    <hr>
+                </div>
+
+                <!-- Stats Tags -->
+                <div id="stats_tab" class="tabcontent">
+                    <h4>Stats</h4>
+                    <hr>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settings_tab" class="tabcontent">
+                    <h4>Settings</h4>
+                    <hr>
+                    <div style="width: 100%; padding: 2px; margin-top: 6px;" class="under_construction">
+                        Toroidal Border
+                        <a href="https://en.wikipedia.org/wiki/Torus" style="text-decoration: none;">
+                            <span style="width: 25px; height: 25px;" class="iconify" data-icon="clarity:info-circle-line"></span>
+                        </a>
+                        <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div style="width: 100%; padding: 2px; margin-top: 6px;" class="under_construction">
+                        Editable Cells
+                        <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div style="width: 100%; padding: 2px; margin-top: 6px;">
+                        Fade on Death
+                        <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
+                            <input id="fade_switch" type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 70%;">Living Cells</td>
+                                <td style="width: 30%;"><input type="color" value="#ff1a1a" id="living_colour" /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 70%;">Dead Cells</td>
+                                <td style="width: 30%;"><input type="color" value="#ffffff" id="dead_colour" /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 70%;">Grid</td>
+                                <td style="width: 30%;"><input type="color" value="#000000" id="grid_colour" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <br>
+                    <div id="speed_indicator" style="width: 100%; text-align: center;">Speed: 5 fps</div>
+                    <div style="width: 100%;">
+                        <div style="width: 10%; float: left; text-align: center;">
+                            <small>1</small>
+                        </div>
+                        <input id="speed_selector" style="width: 75%; float: left;" type="range" min="1" max="100" value="5">
+                        <div style="width: 10%; float: left; text-align: center;">
+                            <small>100</small>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="width: 100%; padding: 2px; margin-top: 6px;">
+                        Max Speed
+                        <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
+                            <input id="max_speed_switch" type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <br>
+                    <div style="width: 100%; text-align: center;">Grid Width</div>
+                    <div class="input-stepper">
+                        <button class="grid_x_stepper">-10</button>
+                        <button class="grid_x_stepper">-1</button>
+                        <input id="grid_x_input" class="grid_x_input" type="text" max="500" min="1" value="25">
+                        <button class="grid_x_stepper">+1</button>
+                        <button class="grid_x_stepper">+10</button>
+                    </div>
+                    <br>
+                    <div style="width: 100%; text-align: center;">Grid Height</div>
+                    <div class="input-stepper">
+                        <button class="grid_y_stepper">-10</button>
+                        <button class="grid_y_stepper">-1</button>
+                        <input id="grid_y_input" class="grid_y_input" type="text" max="500" min="1" value="25">
+                        <button class="grid_y_stepper">+1</button>
+                        <button class="grid_y_stepper">+10</button>
+                    </div>
+                    <br>
+                    <button id="grid_fill_screen_button" style="width: 100%;">Fill Screen</button>
+                </div>
             </div>
         </div>
 
