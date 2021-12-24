@@ -123,6 +123,7 @@ function clearCells(cells) {
             cells[x][y] = 0
         }
     }
+    return cells
 }
 
 function drawCells(cells, dyingCells) {
@@ -231,7 +232,8 @@ advance_button.onclick = function () {
 
 // Clear button
 clear_button.onclick = function () {
-    clearCells(cells)
+    cells = clearCells(cells)
+    drawCells(cells)
 }
 
 // Fade Switch
