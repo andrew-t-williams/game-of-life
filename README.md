@@ -38,6 +38,10 @@ HTML canvas to draw the grid. setInterval() and clearInterval() for iterating th
 - [ ] Cookies to remember settings
 - [ ] Analysis sidebar (current count, stats?)
 - [ ] Host on andrew-williams.dev/game-of-life, make a post on andrew-williams.dev linking to it.
+- [X] Info modal to explain the game:
+  - [X] Opens when clicking the info icon in top right
+  - [ ] Opens on page load
+  - [ ] Able to disable opening -> cookies to remember
 - [ ] Game of Life in Game of Life
 - [X] Infinite borders [Trefoil_knot](https://en.wikipedia.org/wiki/)
 - [ ] Boundary conditions: (infinite loop, hard walls, drawble, portals)

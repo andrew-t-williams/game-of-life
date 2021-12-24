@@ -5,41 +5,49 @@
 const CELL_WIDTH = 20  //px - includes a 1 px border drawn around each edge
 const CELL_HEIGHT = 20 //px - includes a 1 px border drawn around each edge
 
-// const BORDER_COLOUR = '#000000' // black
-// const ALIVE_COLOUR = '#000000' // black
-// const DEAD_COLOUR = '#ffffff'  // white
-
 // Control buttons
 const start_button = document.getElementById('start_game')
 const stop_button = document.getElementById('stop_game')
 const advance_button = document.getElementById('advance_game')
 const clear_button = document.getElementById('clear_game')
 
-// Settings inputs
+// Information Modal
+const info_modal = document.getElementById("info_modal");
+const info_button = document.getElementById("info_button");
+const info_close = document.getElementsByClassName("info_close")[0];
+
 const left_content = document.getElementById('left_content')
 
+// Setting elements
 const fade_switch = document.getElementById('fade_switch')
 const living_colour_selector = document.getElementById('living_colour')
 const dead_colour_selector = document.getElementById('dead_colour')
 const grid_colour_selector = document.getElementById('grid_colour')
-
 const speed_selector = document.getElementById('speed_selector')
 const speed_indicator = document.getElementById('speed_indicator')
 const grid_x_input = document.getElementById('grid_x_input')
 const grid_y_input = document.getElementById('grid_y_input')
 const grid_fill_screen_button = document.getElementById('grid_fill_screen_button')
 
-var interval_length = speed_selector.value // Iteration delay of game loop
+// Calculated globals
+var interval_length = speed_selector.value       // desired fps of game loop
 var living_colour = living_colour_selector.value
 var dead_colour = dead_colour_selector.value
 var grid_colour = grid_colour_selector.value
-var fade = fade_switch.checked
 var running = false
 var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
 
 //////////
 // Init //
 //////////
+
+// For wiki mostly. Opens links in new tab
+$("a").each(function () {
+    $(this).attr('target', '_blank')
+    $(this).attr('rel', 'noopener noreferrer')
+})
+// target="_blank" rel="noopener noreferrer"
+
 
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
@@ -56,7 +64,7 @@ function gameLoop() {
     var oldCells = cells
     cells = advanceState(cells)
     var dyingCells = filterDyingCells(oldCells, cells)
-    drawCells(cells, (fade && running ? dyingCells : null))
+    drawCells(cells, (fade_switch.checked && running ? dyingCells : null))
 }
 
 function filterDyingCells(oldCells, newCells) {
@@ -227,10 +235,10 @@ clear_button.onclick = function () {
 }
 
 // Fade Switch
-fade_switch.onchange = function () {
-    fade = fade_switch.checked
-    drawCells(cells)
-}
+// fade_switch.onchange = function () {
+//     fade = fade_switch.checked
+//     drawCells(cells)
+// }
 
 // Speed Selector
 speed_selector.oninput = function () {
@@ -295,4 +303,26 @@ grid_fill_screen_button.onclick = function () {
     gridFillScreen()
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
     drawCells(cells)
+}
+
+
+
+
+
+
+// When the user clicks the button, open the modal 
+info_button.onclick = function () {
+    info_modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+info_close.onclick = function () {
+    info_modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == info_modal) {
+        info_modal.style.display = "none";
+    }
 }
