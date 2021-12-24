@@ -25,6 +25,7 @@ const dead_colour_selector = document.getElementById('dead_colour')
 const grid_colour_selector = document.getElementById('grid_colour')
 const speed_selector = document.getElementById('speed_selector')
 const speed_indicator = document.getElementById('speed_indicator')
+const max_speed_switch = document.getElementById('max_speed_switch')
 const grid_x_input = document.getElementById('grid_x_input')
 const grid_y_input = document.getElementById('grid_y_input')
 const grid_fill_screen_button = document.getElementById('grid_fill_screen_button')
@@ -238,16 +239,28 @@ clear_button.onclick = function () {
     drawCells(cells)
 }
 
-// Fade Switch
-// fade_switch.onchange = function () {
-//     fade = fade_switch.checked
-//     drawCells(cells)
-// }
-
 // Speed Selector
 speed_selector.oninput = function () {
     interval_length = speed_selector.value
     speed_indicator.innerText = 'Speed: ' + interval_length + ' fps'
+    if (running) {
+        clearInterval(interval)
+        interval = setInterval(gameLoop, 1000 / interval_length)
+    }
+}
+
+// Max speed switch
+max_speed_switch.onchange = function () {
+    // under_construction
+    if (max_speed_switch.checked) {
+        interval_length = Number.MAX_SAFE_INTEGER
+        speed_indicator.innerText = 'Speed: CPU limited'
+        document.getElementById('speed_bar').classList.add("under_construction");
+    } else {
+        interval_length = speed_selector.value
+        speed_indicator.innerText = 'Speed: ' + interval_length + ' fps'
+        document.getElementById('speed_bar').classList.remove("under_construction");
+    }
     if (running) {
         clearInterval(interval)
         interval = setInterval(gameLoop, 1000 / interval_length)
