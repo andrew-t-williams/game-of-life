@@ -283,6 +283,14 @@ $('.grid_y_stepper').click(function () {
 // Grid width input
 grid_x_input.onchange = function () {
     grid_x_count = +grid_x_input.value
+    var max = +grid_x_input.getAttribute('max')
+    var min = +grid_x_input.getAttribute('min')
+    if (grid_x_count > max) {
+        grid_x_count = max
+    } else if (grid_x_count < min) {
+        grid_x_count = min
+    }
+    grid_x_input.value = grid_x_count
     canvas_width = grid_x_count * CELL_WIDTH
     canvas.width = canvas_width
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
@@ -292,6 +300,14 @@ grid_x_input.onchange = function () {
 // Grid height input
 grid_y_input.onchange = function () {
     grid_y_count = +grid_y_input.value
+    var max = +grid_y_input.getAttribute('max')
+    var min = +grid_y_input.getAttribute('min')
+    if (grid_y_count > max) {
+        grid_y_count = max
+    } else if (grid_y_count < min) {
+        grid_y_count = min
+    }
+    grid_y_input.value = grid_y_count
     canvas_height = grid_y_count * CELL_HEIGHT
     canvas.height = canvas_height
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
@@ -304,11 +320,6 @@ grid_fill_screen_button.onclick = function () {
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
     drawCells(cells)
 }
-
-
-
-
-
 
 // When the user clicks the button, open the modal 
 info_button.onclick = function () {
