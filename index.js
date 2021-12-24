@@ -5,41 +5,69 @@
 const CELL_WIDTH = 20  //px - includes a 1 px border drawn around each edge
 const CELL_HEIGHT = 20 //px - includes a 1 px border drawn around each edge
 
-// const BORDER_COLOUR = '#000000' // black
-// const ALIVE_COLOUR = '#000000' // black
-// const DEAD_COLOUR = '#ffffff'  // white
-
 // Control buttons
 const start_button = document.getElementById('start_game')
 const stop_button = document.getElementById('stop_game')
 const advance_button = document.getElementById('advance_game')
 const clear_button = document.getElementById('clear_game')
 
-// Settings inputs
+// Information Modal
+const info_modal = document.getElementById("info_modal");
+const info_button = document.getElementById("info_button");
+const info_close = document.getElementsByClassName("info_close")[0];
+
 const left_content = document.getElementById('left_content')
 
+// Setting elements
 const fade_switch = document.getElementById('fade_switch')
+const stats_switch = document.getElementById('stats_switch')
+const advanced_stats = document.getElementById('advanced_stats')
 const living_colour_selector = document.getElementById('living_colour')
 const dead_colour_selector = document.getElementById('dead_colour')
 const grid_colour_selector = document.getElementById('grid_colour')
-
 const speed_selector = document.getElementById('speed_selector')
 const speed_indicator = document.getElementById('speed_indicator')
+const max_speed_switch = document.getElementById('max_speed_switch')
 const grid_x_input = document.getElementById('grid_x_input')
 const grid_y_input = document.getElementById('grid_y_input')
 const grid_fill_screen_button = document.getElementById('grid_fill_screen_button')
 
-var interval_length = speed_selector.value // Iteration delay of game loop
+// Calculated globals
+var interval_length = speed_selector.value       // desired fps of game loop
+
 var living_colour = living_colour_selector.value
 var dead_colour = dead_colour_selector.value
 var grid_colour = grid_colour_selector.value
-var fade = fade_switch.checked
 var running = false
 var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
+
+// Statistics
+// truth based on 'stats_switch.checked'
+const stat_ideal_framerate = document.getElementById('stat_ideal_framerate')
+const stat_real_framerate = document.getElementById('stat_real_framerate')
+const stat_framerate_diff = document.getElementById('stat_framerate_diff')
+const stat_total_cells = document.getElementById('stat_total_cells')
+
+stat_ideal_framerate.value = interval_length
+
+const stat_frame_array_length = 10
+var stat_frame_count = 0
+var stat_framerate_array = []
+var stat_now = performance.now()
 
 //////////
 // Init //
 //////////
+
+// For wiki mostly. Opens links in new tab
+$("a").each(function () {
+    $(this).attr('target', '_blank')
+    $(this).attr('rel', 'noopener noreferrer')
+})
+
+// Default Tab
+document.getElementById('stats_tab_link').click()
+
 
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
@@ -52,11 +80,36 @@ drawCells(cells)
 ///////////////
 
 function gameLoop() {
-    console.log("game loop")
-    var oldCells = cells
-    cells = advanceState(cells)
-    var dyingCells = filterDyingCells(oldCells, cells)
-    drawCells(cells, (fade && running ? dyingCells : null))
+    // Calculate timestamps
+    var stat_last = stat_now
+    stat_now = performance.now()
+    stat_framerate_array[stat_frame_count] = stat_now - stat_last
+    stat_frame_count++
+
+    // Every 10, calculate and display framerate
+    if (stat_frame_count % 5 == 0) {
+        var real_framerate = (1000 * stat_frame_array_length) / stat_framerate_array.reduce(arrayadd, 0)
+        var rounded_real_framerate = Math.round(real_framerate * 1000) / 1000
+        stat_real_framerate.value = rounded_real_framerate
+        var raw_fps_lag = ((stat_ideal_framerate.value * 100) / real_framerate) - 100
+        var rounded_fps_lag = (Math.round((raw_fps_lag) * 1000) / 1000)
+        stat_framerate_diff.value = (rounded_fps_lag > 1000000 ? "~♾" : rounded_fps_lag + "%")
+    }
+    if (stat_frame_count >= stat_frame_array_length) {
+        stat_frame_count = 0
+    }
+
+    // Calculate next state
+    // Fade dying cells based on changes if required
+    if (fade_switch.checked && running) {
+        var oldCells = cells
+        cells = advanceState(cells)
+        var dyingCells = filterDyingCells(oldCells, cells)
+        drawCells(cells, dyingCells)
+    } else {
+        cells = advanceState(cells, null)
+        drawCells(cells)
+    }
 }
 
 function filterDyingCells(oldCells, newCells) {
@@ -115,10 +168,13 @@ function clearCells(cells) {
             cells[x][y] = 0
         }
     }
+    return cells
 }
 
 function drawCells(cells, dyingCells) {
     if (dyingCells) {
+
+
         var alpha = 0
         var i = 0
         var deathLoop = setInterval(function () {
@@ -177,12 +233,17 @@ function drawCell(x, y, context, value) {
 function gridFillScreen() {
     grid_x_count = Math.floor(left_content.offsetWidth / CELL_WIDTH)
     grid_y_count = Math.floor(left_content.offsetHeight / CELL_HEIGHT)
+    stat_total_cells.value = grid_x_count * grid_y_count
     canvas_width = grid_x_count * CELL_WIDTH
     canvas_height = grid_y_count * CELL_HEIGHT
     grid_x_input.value = grid_x_count
     grid_y_input.value = grid_y_count
     canvas.width = canvas_width
     canvas.height = canvas_height
+}
+
+function arrayadd(accumulator, a) {
+    return accumulator + a;
 }
 
 canvas.addEventListener("mousedown", function (event) {
@@ -223,19 +284,35 @@ advance_button.onclick = function () {
 
 // Clear button
 clear_button.onclick = function () {
-    clearCells(cells)
-}
-
-// Fade Switch
-fade_switch.onchange = function () {
-    fade = fade_switch.checked
+    cells = clearCells(cells)
     drawCells(cells)
 }
 
 // Speed Selector
 speed_selector.oninput = function () {
     interval_length = speed_selector.value
+    stat_ideal_framerate.value = interval_length
     speed_indicator.innerText = 'Speed: ' + interval_length + ' fps'
+    if (running) {
+        clearInterval(interval)
+        interval = setInterval(gameLoop, 1000 / interval_length)
+    }
+}
+
+// Max speed switch
+max_speed_switch.onchange = function () {
+    // under_construction
+    if (max_speed_switch.checked) {
+        interval_length = 999999
+        stat_ideal_framerate.value = interval_length
+        speed_indicator.innerText = 'Speed: CPU limited'
+        document.getElementById('speed_bar').classList.add("under_construction");
+    } else {
+        interval_length = speed_selector.value
+        stat_ideal_framerate.value = interval_length
+        speed_indicator.innerText = 'Speed: ' + interval_length + ' fps'
+        document.getElementById('speed_bar').classList.remove("under_construction");
+    }
     if (running) {
         clearInterval(interval)
         interval = setInterval(gameLoop, 1000 / interval_length)
@@ -275,6 +352,15 @@ $('.grid_y_stepper').click(function () {
 // Grid width input
 grid_x_input.onchange = function () {
     grid_x_count = +grid_x_input.value
+    var max = +grid_x_input.getAttribute('max')
+    var min = +grid_x_input.getAttribute('min')
+    if (grid_x_count > max) {
+        grid_x_count = max
+    } else if (grid_x_count < min) {
+        grid_x_count = min
+    }
+    grid_x_input.value = grid_x_count
+    stat_total_cells.value = grid_x_count * grid_y_count
     canvas_width = grid_x_count * CELL_WIDTH
     canvas.width = canvas_width
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
@@ -284,6 +370,15 @@ grid_x_input.onchange = function () {
 // Grid height input
 grid_y_input.onchange = function () {
     grid_y_count = +grid_y_input.value
+    var max = +grid_y_input.getAttribute('max')
+    var min = +grid_y_input.getAttribute('min')
+    if (grid_y_count > max) {
+        grid_y_count = max
+    } else if (grid_y_count < min) {
+        grid_y_count = min
+    }
+    grid_y_input.value = grid_y_count
+    stat_total_cells.value = grid_x_count * grid_y_count
     canvas_height = grid_y_count * CELL_HEIGHT
     canvas.height = canvas_height
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
@@ -295,4 +390,47 @@ grid_fill_screen_button.onclick = function () {
     gridFillScreen()
     cells = changeDimensionCells(cells, grid_x_count, grid_y_count)
     drawCells(cells)
+}
+
+// When the user clicks the button, open the modal 
+info_button.onclick = function () {
+    info_modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+info_close.onclick = function () {
+    info_modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == info_modal) {
+        info_modal.style.display = "none";
+    }
+}
+
+// Open Tab
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Enable/Disable Stats
+stats_switch.onchange = function () {
+    if (stats_switch.checked) {
+        // stats_warning.style.display = "none";
+        advanced_stats.style.display = "block";
+    } else {
+        // stats_warning.style.display = "block";
+        advanced_stats.style.display = "none";
+    }
 }

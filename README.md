@@ -37,7 +37,15 @@ HTML canvas to draw the grid. setInterval() and clearInterval() for iterating th
   - [X] Fade when dying
 - [ ] Cookies to remember settings
 - [ ] Analysis sidebar (current count, stats?)
+  * Make stats happen at regular intervals by making the average array based on framerate
 - [ ] Host on andrew-williams.dev/game-of-life, make a post on andrew-williams.dev linking to it.
+- [X] Info modal to explain the game:
+  - [X] Opens when clicking the info icon in top right
+  - [ ] Opens on page load
+  - [ ] Able to disable opening -> cookies to remember
+- [ ] ToolTips to explain functionality:
+  - [ ] How each stat is calculated
+    * Framerate -> 10 frame average
 - [ ] Game of Life in Game of Life
 - [X] Infinite borders [Trefoil_knot](https://en.wikipedia.org/wiki/)
 - [ ] Boundary conditions: (infinite loop, hard walls, drawble, portals)
