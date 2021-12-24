@@ -118,8 +118,54 @@
 
                 <!-- Stats Tags -->
                 <div id="stats_tab" class="tabcontent">
-                    <h4>Stats</h4>
+                    <h4>Statistics</h4>
                     <hr>
+                    <!-- Normal Stats -->
+                    <h5 style="margin: 4px 0px">Basic Stats:</h5>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 60%;">Ideal Framerate:</td>
+                                <td style="width: 40%;"><input style="width: 90%" value="x" disabled></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 60%;">Real Framerate:</td>
+                                <td style="width: 40%;"><input style="width: 90%" value="x" disabled></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 60%;">Framerate EFF:</td>
+                                <td style="width: 40%;"><input style="width: 90%" value="x%" disabled></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 60%;">Total Cells:</td>
+                                <td style="width: 40%;"><input style="width: 90%" value="x" disabled></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <!-- Advanced Stats -->
+                    <div style="width: 100%; padding: 2px; margin-top: 6px; height: 18px;">
+                        <h5 style="margin: 0px 0px 4px 0px; float: left;">Advanced Stats:</h5>
+                        <label class="switch" style="margin-left: 3px; float: right; margin-right: 10px;">
+                            <input id="stats_switch" type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div id="advanced_stats" style="display: none;">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 60%;">Dead Cells:</td>
+                                    <td style="width: 40%;"><input style="width: 90%" value="x" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 60%;">Alive Cells:</td>
+                                    <td style="width: 40%;"><input style="width: 90%" value="x" disabled></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <small>Advanced stats may cause slower gameplay.</small>
+                    </div>
                 </div>
 
                 <!-- Settings Tab -->

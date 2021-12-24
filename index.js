@@ -20,6 +20,8 @@ const left_content = document.getElementById('left_content')
 
 // Setting elements
 const fade_switch = document.getElementById('fade_switch')
+const stats_switch = document.getElementById('stats_switch')
+const advanced_stats = document.getElementById('advanced_stats')
 const living_colour_selector = document.getElementById('living_colour')
 const dead_colour_selector = document.getElementById('dead_colour')
 const grid_colour_selector = document.getElementById('grid_colour')
@@ -38,6 +40,9 @@ var grid_colour = grid_colour_selector.value
 var running = false
 var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
 
+// Statistics
+// truth based on 'stats_switch.checked'
+
 //////////
 // Init //
 //////////
@@ -49,7 +54,7 @@ $("a").each(function () {
 })
 
 // Default Tab
-document.getElementById('settings_tab_link').click()
+document.getElementById('stats_tab_link').click()
 
 
 var canvas = document.getElementById('game');
@@ -368,4 +373,15 @@ function openTab(evt, tabName) {
     }
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
+}
+
+// Enable/Disable Stats
+stats_switch.onchange = function () {
+    if (stats_switch.checked) {
+        // stats_warning.style.display = "none";
+        advanced_stats.style.display = "block";
+    } else {
+        // stats_warning.style.display = "block";
+        advanced_stats.style.display = "none";
+    }
 }
