@@ -1,167 +1,28 @@
-/////////////
-// Globals //
-/////////////
+// Author: Andrew Thomas Williams
 
-const CELL_WIDTH = 20  //px - includes a 1 px border drawn around each edge
-const CELL_HEIGHT = 20 //px - includes a 1 px border drawn around each edge
+////////////////////////////
+// General Initialization //
+////////////////////////////
 
-// Control buttons
-const start_button = document.getElementById('start_game')
-const stop_button = document.getElementById('stop_game')
-const advance_button = document.getElementById('advance_game')
-const clear_button = document.getElementById('clear_game')
-
-// Information Modal
-const info_modal = document.getElementById("info_modal");
-const info_button = document.getElementById("info_button");
-const info_close = document.getElementsByClassName("info_close")[0];
-
-const left_content = document.getElementById('left_content')
-
-// Setting elements
-const fade_switch = document.getElementById('fade_switch')
-const stats_switch = document.getElementById('stats_switch')
-const advanced_stats = document.getElementById('advanced_stats')
-const living_colour_selector = document.getElementById('living_colour')
-const dead_colour_selector = document.getElementById('dead_colour')
-const grid_colour_selector = document.getElementById('grid_colour')
-const speed_selector = document.getElementById('speed_selector')
-const speed_indicator = document.getElementById('speed_indicator')
-const max_speed_switch = document.getElementById('max_speed_switch')
-const grid_x_input = document.getElementById('grid_x_input')
-const grid_y_input = document.getElementById('grid_y_input')
-const grid_fill_screen_button = document.getElementById('grid_fill_screen_button')
-
-// Calculated globals
-var interval_length = speed_selector.value       // desired fps of game loop
-
-var living_colour = living_colour_selector.value
-var dead_colour = dead_colour_selector.value
-var grid_colour = grid_colour_selector.value
-var running = false
-var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
-
-////////////////
-// Statistics //
-////////////////
-// truth based on 'stats_switch.checked'
-const stat_ideal_framerate = document.getElementById('stat_ideal_framerate')
-const stat_real_framerate = document.getElementById('stat_real_framerate')
-const stat_framerate_diff = document.getElementById('stat_framerate_diff')
-const stat_total_cells = document.getElementById('stat_total_cells')
-const stat_dead_cells = document.getElementById('stat_dead_cells')
-const stat_living_cells = document.getElementById('stat_living_cells')
-const stat_living_ratio = document.getElementById('stat_living_ratio')
-
-const stat_living_cells_max = document.getElementById('stat_living_cells_max')
-const stat_living_ratio_max = document.getElementById('stat_living_ratio_max')
-
-
-stat_ideal_framerate.value = interval_length
-
-const stat_frame_array_length = 10
-var stat_frame_count = 0
-var stat_framerate_array = []
-var stat_now = performance.now()
-
-var stat_fps_chart = new Chart("historicalFPSChart", {
-    type: "line",
-    data: {
-        labels: [],
-        datasets: [{
-            data: [],
-            borderColor: "green",
-            fill: true
-        }, {
-            data: [],
-            borderColor: "blue",
-            fill: true
-        },
-        ]
-    },
-    options: {
-        legend: { display: false }
-    }
-});
-
-function addData(chart, label, data) {
-    chart.data.labels.push(label);
-    for (var i = 0; i < data.length; i++) {
-        chart.data.datasets[i].data.push(data[i])
-    }
-    chart.update();
-}
-
-
-function removeData(chart) {
-    chart.data.labels.shift();
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.shift();
-    });
-    chart.update();
-}
-
-var yValues = [100, 420];
-
-var stat_living_ratio_chart = new Chart("livingRatioChart", {
-    type: "pie",
-    data: {
-        // labels: xValues,
-        datasets: [{
-            backgroundColor: ['red', 'black'],
-            data: [0, 1]
-        }]
-    },
-    options: {
-        title: {
-            display: false,
-            text: "World Wide Wine Production 2018"
-        },
-        layout: {
-            margin: 0
-        }
-    }
-});
-
-document.getElementById('livingRatioChart').setAttribute('style', 'float: left; width:93px; height: 93px;')
-
-var stat_living_ratio_max_chart = new Chart("livingRatioMaxChart", {
-    type: "pie",
-    data: {
-        labels: [],
-        datasets: [{
-            backgroundColor: ['purple', 'black'],
-            data: [0, 1]
-        }]
-    },
-    options: {
-        title: {
-            display: false,
-            text: "World Wide Wine Production 2018"
-        }
-    }
-});
-
-//////////
-// Init //
-//////////
-
-// For wiki mostly. Opens links in new tab
+// Opens all links in new tab, for wiki mostly. 
 $("a").each(function () {
     $(this).attr('target', '_blank')
     $(this).attr('rel', 'noopener noreferrer')
 })
 
-// Default Tab
+// Click default tab
 document.getElementById('stats_tab_link').click()
 
-
+// Init game board
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
 gridFillScreen()
+
+// Create cells 2D array
 var cells = initCells(grid_x_count, grid_y_count)
+
+// One game loop: draws cells and populates initial stats
 gameLoop()
-// drawCells(cells)
 
 ///////////////
 // Functions //
@@ -399,7 +260,7 @@ start_button.onclick = function () {
     stop_button.disabled = false
     advance_button.disabled = true
     running = true
-    interval = setInterval(gameLoop, 1000 / interval_length);
+    game_interval = setInterval(gameLoop, 1000 / interval_length);
 }
 
 // Stop button
@@ -408,7 +269,7 @@ stop_button.onclick = function () {
     stop_button.disabled = true
     advance_button.disabled = false
     running = false
-    clearInterval(interval);
+    clearInterval(game_interval);
     drawCells(cells)
 }
 
@@ -429,8 +290,8 @@ speed_selector.oninput = function () {
     stat_ideal_framerate.value = interval_length
     speed_indicator.innerText = 'Speed: ' + interval_length + ' fps'
     if (running) {
-        clearInterval(interval)
-        interval = setInterval(gameLoop, 1000 / interval_length)
+        clearInterval(game_interval)
+        game_interval = setInterval(gameLoop, 1000 / interval_length)
     }
 }
 
@@ -449,8 +310,8 @@ max_speed_switch.onchange = function () {
         document.getElementById('speed_bar').classList.remove("under_construction");
     }
     if (running) {
-        clearInterval(interval)
-        interval = setInterval(gameLoop, 1000 / interval_length)
+        clearInterval(game_interval)
+        game_interval = setInterval(gameLoop, 1000 / interval_length)
     }
 }
 
