@@ -5,7 +5,11 @@
     <meta charset="utf-8">
     <title>Game of Life</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <!-- Iconify -->
     <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
 </head>
 
@@ -114,6 +118,7 @@
                 <div id="patterns_tab" class="tabcontent">
                     <h4>Patterns</h4>
                     <hr>
+                    <small>Coming soon!</small>
                 </div>
 
                 <!-- Stats Tags -->
@@ -122,15 +127,16 @@
                     <hr>
                     <!-- Normal Stats -->
                     <!-- <h5 style="margin: 4px 0px">Basic Stats:</h5> -->
+                    <canvas id="historicalFPSChart" style="width:100%;"></canvas>
                     <table>
                         <tbody>
                             <tr>
                                 <td style="width: 60%;">Real FPS:</td>
-                                <td style="width: 40%;"><input id="stat_real_framerate" style="width: 90%" value="--" disabled></td>
+                                <td style="width: 40%;"><input id="stat_real_framerate" style="width: 90%; color: blue;" value="--" disabled></td>
                             </tr>
                             <tr>
                                 <td style="width: 60%;">Target FPS:</td>
-                                <td style="width: 40%;"><input id="stat_ideal_framerate" style="width: 90%" value="--" disabled></td>
+                                <td style="width: 40%;"><input id="stat_ideal_framerate" style="width: 90%; color: green;" value="--" disabled></td>
                             </tr>
                             <tr>
                                 <td style="width: 60%;">FPS Lag:</td>
@@ -156,27 +162,40 @@
                             <tbody>
                                 <tr>
                                     <td style="width: 60%;">Dead Cells:</td>
-                                    <td style="width: 40%;"><input id="stat_dead_cells" style="width: 90%" value="--" disabled></td>
+                                    <td style="width: 40%;"><input id="stat_dead_cells" style="width: 90%;" value="--" disabled></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 60%;">Alive Cells:</td>
-                                    <td style="width: 40%;"><input id="stat_living_cells" style="width: 90%" value="--" disabled></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 60%;">Peak Alive:</td>
-                                    <td style="width: 40%;"><input id="stat_living_cells_max" style="width: 90%" value="0" disabled></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 60%;">Ratio:</td>
-                                    <td style="width: 40%;"><input id="stat_living_ratio" style="width: 90%" value="0%" disabled></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 60%;">Peak Ratio: </td>
-                                    <td style="width: 40%;"><input id="stat_living_ratio_max" style="width: 90%" value="0%" disabled></td>
+                                    <td style="width: 40%;"><input id="stat_living_cells" style="width: 90%; color: red;" value="--" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <br>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 60%;">Peak Alive:</td>
+                                    <td style="width: 40%;"><input id="stat_living_cells_max" style="width: 90%; color: purple" value="0" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 60%;">Ratio:</td>
+                                    <td style="width: 40%;"><input id="stat_living_ratio" style="width: 90%; color: red;" value="0%" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 60%;">Peak Ratio: </td>
+                                    <td style="width: 40%;"><input id="stat_living_ratio_max" style="width: 90%; color: purple;" value="0%" disabled></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="text-align: center; height: 55px;">
+                            <div style="width: 50%; float: left;">
+                                <canvas id="livingRatioChart"></canvas>
+                                <!-- <small>alive</small> -->
+                            </div>
+                            <div style="width: 50%; float: right;">
+                                <canvas id="livingRatioMaxChart"></canvas>
+                                <!-- <small>max alive</small> -->
+                            </div>
+                        </div>
                         <small>Advanced stats may cause slower gameplay.</small>
                     </div>
                 </div>

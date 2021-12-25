@@ -41,7 +41,9 @@ var grid_colour = grid_colour_selector.value
 var running = false
 var interval, grid_x_count, grid_y_count, canvas_width, canvas_height
 
-// Statistics
+////////////////
+// Statistics //
+////////////////
 // truth based on 'stats_switch.checked'
 const stat_ideal_framerate = document.getElementById('stat_ideal_framerate')
 const stat_real_framerate = document.getElementById('stat_real_framerate')
@@ -61,6 +63,84 @@ const stat_frame_array_length = 10
 var stat_frame_count = 0
 var stat_framerate_array = []
 var stat_now = performance.now()
+
+var stat_fps_chart = new Chart("historicalFPSChart", {
+    type: "line",
+    data: {
+        labels: [],
+        datasets: [{
+            data: [],
+            borderColor: "green",
+            fill: true
+        }, {
+            data: [],
+            borderColor: "blue",
+            fill: true
+        },
+        ]
+    },
+    options: {
+        legend: { display: false }
+    }
+});
+
+function addData(chart, label, data) {
+    chart.data.labels.push(label);
+    for (var i = 0; i < data.length; i++) {
+        chart.data.datasets[i].data.push(data[i])
+    }
+    chart.update();
+}
+
+
+function removeData(chart) {
+    chart.data.labels.shift();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.shift();
+    });
+    chart.update();
+}
+
+var yValues = [100, 420];
+
+var stat_living_ratio_chart = new Chart("livingRatioChart", {
+    type: "pie",
+    data: {
+        // labels: xValues,
+        datasets: [{
+            backgroundColor: ['red', 'black'],
+            data: [0, 1]
+        }]
+    },
+    options: {
+        title: {
+            display: false,
+            text: "World Wide Wine Production 2018"
+        },
+        layout: {
+            margin: 0
+        }
+    }
+});
+
+document.getElementById('livingRatioChart').setAttribute('style', 'float: left; width:93px; height: 93px;')
+
+var stat_living_ratio_max_chart = new Chart("livingRatioMaxChart", {
+    type: "pie",
+    data: {
+        labels: [],
+        datasets: [{
+            backgroundColor: ['purple', 'black'],
+            data: [0, 1]
+        }]
+    },
+    options: {
+        title: {
+            display: false,
+            text: "World Wide Wine Production 2018"
+        }
+    }
+});
 
 //////////
 // Init //
@@ -107,19 +187,26 @@ function timingStats() {
     // Calculate timestamps
     var stat_last = stat_now
     stat_now = performance.now()
-    stat_framerate_array[stat_frame_count] = stat_now - stat_last
+    stat_framerate_array[stat_frame_count % stat_frame_array_length] = stat_now - stat_last
     stat_frame_count++
 
-    // Every 10 frames, calculate and display framerate
-    if (stat_frame_count % 5 == 0) {
+    // Twice every array length calculate and display framerate
+    if (stat_frame_count % (stat_frame_array_length / 2) == 0) {
         var real_framerate = (1000 * stat_frame_array_length) / stat_framerate_array.reduce(arrayadd, 0)
         var rounded_real_framerate = Math.round(real_framerate * 1000) / 1000
         stat_real_framerate.value = rounded_real_framerate
         var raw_fps_lag = ((stat_ideal_framerate.value * 100) / real_framerate) - 100
         var rounded_fps_lag = (Math.round((raw_fps_lag) * 1000) / 1000)
         stat_framerate_diff.value = (rounded_fps_lag > 1000 ? ">1000" : rounded_fps_lag) + "%"
+
+        addData(stat_fps_chart, stat_frame_count, [stat_ideal_framerate.value, real_framerate])
+        var num_visible_data_points = 10
+        if (stat_frame_count > num_visible_data_points * stat_frame_array_length / 2) {
+            removeData(stat_fps_chart)
+        }
     }
-    if (stat_frame_count >= stat_frame_array_length) { stat_frame_count = 0 }
+    // console.log(stat_frame_count)
+    // if (stat_frame_count >= stat_frame_array_length) { stat_frame_count = 0 }
 
     // Hide certain stats if game is advenced using button
     if (!running) {
@@ -137,11 +224,18 @@ function nonTimingStats() {
 
         stat_living_cells.value = living
         stat_dead_cells.value = total - living
-        stat_living_ratio.value = living_ratio
+        stat_living_ratio.value = living_ratio + "%"
         if (living > stat_living_cells_max.value) {
             stat_living_cells_max.value = living
-            stat_living_ratio_max.value = living_ratio
+            stat_living_ratio_max.value = living_ratio + "%"
+            stat_living_ratio_max_chart.data.datasets[0].data = [living, total - living]
+            stat_living_ratio_max_chart.update()
         }
+
+        stat_living_ratio_chart.data.datasets[0].data = [living, total - living]
+        stat_living_ratio_chart.update()
+
+
     }
 }
 

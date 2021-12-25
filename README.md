@@ -42,6 +42,7 @@ HTML canvas to draw the grid. setInterval() and clearInterval() for iterating th
   - [ ] Display calculation time and efficiency (desired fps vs actual) stats for an improvement metric
   - [ ] only draw changed cells?
   - [ ] indicate to user which settings cause the most slowdown (e.g. fade, size of map)
+- [ ] Show graphs of historical framerates
 
 ### Completed TODOs
 - [X] Change speed, pause, play
