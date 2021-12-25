@@ -1,6 +1,6 @@
 // Author: Andrew Thomas Williams
 
-// truth based on 'stats_switch.checked'
+// Adanced stats based on 'stats_switch.checked'
 
 // Stat related DOMs
 const stat_ideal_framerate = document.getElementById('stat_ideal_framerate')
@@ -28,39 +28,30 @@ stat_ideal_framerate.value = interval_length
 var stat_fps_chart = new Chart("historicalFPSChart", {
     type: "line",
     data: {
-        labels: [],
         datasets: [{
             data: [],
-            borderColor: "green",
-            fill: true
+            borderColor: "green"
         }, {
             data: [],
-            borderColor: "blue",
-            fill: true
-        },
-        ]
+            borderColor: "blue"
+        }]
     },
-    options: {
-        legend: { display: false }
-    }
+    options: { legend: { display: false } }
 });
 
 var stat_living_ratio_chart = new Chart("livingRatioChart", {
     type: "pie",
     data: {
-        // labels: xValues,
         datasets: [{
             backgroundColor: ['red', 'black'],
             data: [0, 1]
         }]
     },
     options: {
-        title: {
-            display: false,
-            text: "World Wide Wine Production 2018"
-        },
-        layout: {
-            margin: 0
+        elements: {
+            arc: {
+                borderWidth: 1
+            }
         }
     }
 });
@@ -75,9 +66,10 @@ var stat_living_ratio_max_chart = new Chart("livingRatioMaxChart", {
         }]
     },
     options: {
-        title: {
-            display: false,
-            text: "World Wide Wine Production 2018"
+        elements: {
+            arc: {
+                borderWidth: 1
+            }
         }
     }
 });
