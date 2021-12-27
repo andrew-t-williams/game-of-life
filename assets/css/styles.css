@@ -238,3 +238,29 @@ input:checked+.slider:before {
     height: calc(100vh - 70px - 52px - 12px);
     overflow: scroll;
 }
+
+
+.labl {
+    display: block;
+    width: 400px;
+}
+
+.labl>input {
+    /* HIDE RADIO */
+    visibility: hidden;
+    /* Makes input not-clickable */
+    position: absolute;
+    /* Remove input from document flow */
+}
+
+.labl>input+div {
+    /* DIV STYLES */
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.labl>input:checked+div {
+    /* (RADIO CHECKED) DIV STYLES */
+    background-color: grey;
+    border: 1px solid #ff6600;
+}

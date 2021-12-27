@@ -38,4 +38,4 @@ var game_interval
 var interval_length = speed_selector.value
 var running = false
 
-
+var canvas = document.getElementById('game');
