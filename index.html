@@ -114,30 +114,56 @@
                 <!-- Pattern Tags -->
                 <div id="patterns_tab" class="tabcontent">
                     <h4>Patterns</h4>
+                    <!-- Single Cell -->
                     <label class="labl">
                         <input type="radio" class="pattern_radio" name="radioname" value="single_cell" checked="checked" />
-                        <div>
-                            <canvas id="single_cell" width="100" height="100"></canvas>
+                        <div class="canvas_60x60">
+                            <canvas id="single_cell" width="60" height="60"></canvas>
                         </div>
                     </label>
-                    <label class="labl">
-                        <input type="radio" class="pattern_radio" name="radioname" value="oscillator_1" />
-                        <div>
-                            <canvas id="oscillator_1" width="100" height="100"></canvas>
-                        </div>
-                    </label>
-                    <label class="labl">
-                        <input type="radio" class="pattern_radio" name="radioname" value="glider_1" />
-                        <div>
-                            <canvas id="glider_1" width="100" height="100"></canvas>
-                        </div>
-                    </label>
-                    <label class="labl">
-                        <input type="radio" class="pattern_radio" name="radioname" value="explosive_1" />
-                        <div>
-                            <canvas id="explosive_1" width="100" height="100"></canvas>
-                        </div>
-                    </label>
+                    <br>
+
+                    <!-- Collapsibles -->
+                    <button class="collapsible">Still Lifes</button>
+                    <div class="collapsible_content">
+                        <!-- Beehive -->
+                        <label class="labl">
+                            <input type="radio" class="pattern_radio" name="radioname" value="beehive" />
+                            <div class="canvas_60x60">
+                                <canvas id="beehive" width="60" height="60"></canvas>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="collapsible">Oscillators</button>
+                    <div class="collapsible_content">
+                        <!-- Oscillator 1 -->
+                        <label class="labl">
+                            <input type="radio" class="pattern_radio" name="radioname" value="oscillator_1" />
+                            <div class="canvas_60x60">
+                                <canvas id="oscillator_1" width="60" height="60"></canvas>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="collapsible">Gliders</button>
+                    <div class="collapsible_content">
+                        <!-- Glider 1 -->
+                        <label class="labl">
+                            <input type="radio" class="pattern_radio" name="radioname" value="glider_1" />
+                            <div class="canvas_60x60">
+                                <canvas id="glider_1" width="60" height="60"></canvas>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="collapsible">Explosive</button>
+                    <div class="collapsible_content">
+                        <!-- Explosive 1 -->
+                        <label class="labl">
+                            <input type="radio" class="pattern_radio" name="radioname" value="explosive_1" />
+                            <div class="canvas_60x60">
+                                <canvas id="explosive_1" width="60" height="60"></canvas>
+                            </div>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Stats Tags -->
