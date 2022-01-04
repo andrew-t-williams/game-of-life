@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Game of Life</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Chart.js -->
@@ -100,25 +100,70 @@
             <div class="right_content">
                 <!-- Tab Links -->
                 <div class="tab">
-
-
-                    <button id="settings_tab_link" class="tablinks" onclick="openTab(event, 'settings_tab')">
-                        <span class="iconify" data-icon="ci:settings-filled"></span>
+                    <button id="patterns_tab_link" class="tablinks" onclick="openTab(event, 'patterns_tab')">
+                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
                     </button>
                     <button id="stats_tab_link" class="tablinks" onclick="openTab(event, 'stats_tab')">
                         <span class="iconify" data-icon="bx:bx-stats"></span>
                     </button>
-                    <button id="patterns_tab_link" class="tablinks" onclick="openTab(event, 'patterns_tab')">
-                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                    <button id="settings_tab_link" class="tablinks" onclick="openTab(event, 'settings_tab')">
+                        <span class="iconify" data-icon="ci:settings-filled"></span>
                     </button>
-
                 </div>
 
                 <!-- Pattern Tags -->
                 <div id="patterns_tab" class="tabcontent">
                     <h4>Patterns</h4>
-                    <hr>
-                    <small>Coming soon!</small>
+                    <!-- Single Cell -->
+                    <label class="labl">
+                        <input type="radio" class="pattern_radio" name="radioname" value="single_cell" checked="checked" />
+                        <div class="canvas_60x60">
+                            <canvas id="single_cell" width="20" height="20"></canvas>
+                        </div>
+                    </label>
+                    <br>
+
+                    <!-- Collapsibles -->
+                    <button class="collapsible">Still Lifes</button>
+                    <div class="collapsible_content">
+                        <!-- Beehive -->
+                        <label class="labl">
+                            <input type="radio" class="pattern_radio" name="radioname" value="beehive" />
+                            <div class="canvas_60x60">
+                                <canvas id="beehive" width="80" height="60"></canvas>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="collapsible">Oscillators</button>
+                    <div class="collapsible_content">
+                        <!-- Oscillator 1 -->
+                        <label class="labl">
+                            <input type="radio" class="pattern_radio" name="radioname" value="oscillator_1" />
+                            <div class="canvas_60x60">
+                                <canvas id="oscillator_1" width="60" height="60"></canvas>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="collapsible">Gliders</button>
+                    <div class="collapsible_content">
+                        <!-- Glider 1 -->
+                        <label class="labl">
+                            <input type="radio" class="pattern_radio" name="radioname" value="glider_1" />
+                            <div class="canvas_60x60">
+                                <canvas id="glider_1" width="60" height="60"></canvas>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="collapsible">Explosive</button>
+                    <div class="collapsible_content">
+                        <!-- Explosive 1 -->
+                        <label class="labl">
+                            <input type="radio" class="pattern_radio" name="radioname" value="explosive_1" />
+                            <div class="canvas_60x60">
+                                <canvas id="explosive_1" width="60" height="60"></canvas>
+                            </div>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Stats Tags -->
@@ -186,14 +231,14 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div style="text-align: center; height: 55px;">
+                        <div style="text-align: center; height: 70px;">
                             <div style="width: 50%; float: left;">
                                 <canvas id="livingRatioChart"></canvas>
-                                <!-- <small>alive</small> -->
+                                <small>alive</small>
                             </div>
                             <div style="width: 50%; float: right;">
                                 <canvas id="livingRatioMaxChart"></canvas>
-                                <!-- <small>max alive</small> -->
+                                <small>Peak alive</small>
                             </div>
                         </div>
                         <small>Advanced stats may cause slower gameplay.</small>
@@ -289,9 +334,11 @@
                 </div>
             </div>
         </div>
-
     </div>
-
+    <script src="/assets/js/globals.js"></script>
+    <script src="/assets/js/functions.js"></script>
+    <script src="/assets/js/stats.js"></script>
+    <script src="/assets/js/patterns.js"></script>
     <script src="index.js"></script>
 </body>
 

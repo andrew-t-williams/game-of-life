@@ -238,3 +238,68 @@ input:checked+.slider:before {
     height: calc(100vh - 70px - 52px - 12px);
     overflow: scroll;
 }
+
+
+.labl {
+    display: block;
+    width: 100%;
+}
+
+.labl>input {
+    /* HIDE RADIO */
+    visibility: hidden;
+    /* Makes input not-clickable */
+    position: absolute;
+    /* Remove input from document flow */
+}
+
+.labl>input+div {
+    /* DIV STYLES */
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.labl>input:checked+div {
+    /* (RADIO CHECKED) DIV STYLES */
+    background-color: grey;
+    border: 1px solid #ff1b1a;
+}
+
+.canvas_60x60 {
+    text-align: center;
+}
+
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.active_collapsible, .collapsible:hover {
+    background-color: #555;
+}
+
+.collapsible:after {
+    content: '\002B';
+    /* color: 929292; */
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.active_collapsible:after {
+    content: "\2212";
+}
+
+.collapsible_content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    border: 2px solid rgb(85, 85, 85);
+}
